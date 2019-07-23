@@ -68,6 +68,23 @@ let printUseOnCd = (~shell) =>
       add-zsh-hook chpwd _fnm_autoload_hook \
         && _fnm_autoload_hook
     |}
+  | Es => {|
+      fn _fnm_cd_hook {
+        let (node_file = <={access -1 -fr .node-version .nvmrc}) {
+          if {! ~ $node_file ()} {
+            echo fnm: Found $node_file;
+            fnm use;
+          }
+        }
+      };
+
+      let (fn-cd_ = $fn-cd) {
+        fn cd {
+          cd_ $*;
+          _fnm_cd_hook;
+        }
+      };
+    |}
   };
 
 let run =
@@ -121,6 +138,11 @@ let run =
       nodeDistMirror,
     )
     |> Console.log;
+  | Es =>
+    Printf.sprintf("path = (%s/bin $path);", path) |> Console.log;
+    Printf.sprintf("%s = %s;", Config.FNM_MULTISHELL_PATH.name, path) |> Console.log;
+    Printf.sprintf("%s = %s;", Config.FNM_DIR.name, fnmDir) |> Console.log;
+    Printf.sprintf("%s = %s;", Config.FNM_NODE_DIST_MIRROR.name, nodeDistMirror) |> Console.log;
   };
 
   if (useOnCd) {

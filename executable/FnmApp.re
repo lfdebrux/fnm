@@ -260,7 +260,7 @@ let env = {
     open Fnm.System.Shell;
     let doc = "Specifies a specific shell type. If omitted, it will be inferred based on the process tree. $(docv)";
     let shellChoices =
-      Arg.enum([("fish", Fish), ("bash", Bash), ("zsh", Zsh)]);
+      Arg.enum([("fish", Fish), ("bash", Bash), ("zsh", Zsh), ("es", Es)]);
     Arg.(value & opt(some(shellChoices), None) & info(["shell"], ~doc));
   };
 

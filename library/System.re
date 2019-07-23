@@ -12,7 +12,8 @@ module Shell = {
   type t =
     | Bash
     | Zsh
-    | Fish;
+    | Fish
+    | Es;
 
   let infer = () => {
     let processInfo = pid => {
